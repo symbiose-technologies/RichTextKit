@@ -15,6 +15,7 @@ extension RichTextCoordinator {
      Make the coordinator subscribe to context changes.
      */
     func subscribeToContextChanges() {
+        subscribeToExplicitTxtReset()
         subscribeToAlignment()
         subscribeToBackgroundColor()
         subscribeToFontName()
@@ -39,6 +40,22 @@ extension RichTextCoordinator {
 
 private extension RichTextCoordinator {
 
+    func subscribeToExplicitTxtReset() {
+        richTextContext.$explicitTxtReset
+            .sink { [weak self] expResetOpt in
+                if let expTxtReset = expResetOpt {
+                    print("[RichTextCoordinator] subscribeToExplicitTxtReset")
+                    DispatchQueue.main.async {
+                        self?.textView.attributedString = expTxtReset
+                        
+                        self?.richTextContext.explicitTxtReset = nil
+                        
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
     func subscribeToAlignment() {
         richTextContext.$textAlignment
             .sink(

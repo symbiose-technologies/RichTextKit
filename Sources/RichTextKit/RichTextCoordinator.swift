@@ -97,7 +97,11 @@ open class RichTextCoordinator: NSObject {
     // MARK: - UITextViewDelegate
 
     open func textViewDidBeginEditing(_ textView: UITextView) {
-        richTextContext.isEditingText = true
+        if !self.richTextContext.isEditingText {
+            DispatchQueue.main.async {
+                self.richTextContext.isEditingText = true
+            }
+        }
     }
 
     open func textViewDidChange(_ textView: UITextView) {
@@ -109,7 +113,11 @@ open class RichTextCoordinator: NSObject {
     }
 
     open func textViewDidEndEditing(_ textView: UITextView) {
-        richTextContext.isEditingText = false
+        if self.richTextContext.isEditingText {
+            DispatchQueue.main.async {
+                self.richTextContext.isEditingText = false
+            }
+        }
     }
     #endif
 
@@ -119,8 +127,11 @@ open class RichTextCoordinator: NSObject {
     // MARK: - NSTextViewDelegate
 
     open func textDidBeginEditing(_ notification: Notification) {
-        richTextContext.isEditingText = true
-    }
+        if !self.richTextContext.isEditingText {
+            DispatchQueue.main.async {
+                self.richTextContext.isEditingText = true
+            }
+        }    }
 
     open func textDidChange(_ notification: Notification) {
         syncWithTextView()
@@ -131,7 +142,12 @@ open class RichTextCoordinator: NSObject {
     }
 
     open func textDidEndEditing(_ notification: Notification) {
-        richTextContext.isEditingText = false
+        if self.richTextContext.isEditingText {
+            DispatchQueue.main.async {
+                self.richTextContext.isEditingText = false
+            }
+        }
+        
     }
     #endif
 }
@@ -202,6 +218,16 @@ extension RichTextCoordinator {
     func syncContextWithTextViewAfterDelay() {
         let styles = textView.currentRichTextStyles
 
+        if let expTxtReset = richTextContext.explicitTxtReset {
+            if !expTxtReset.isEqual(to: textView.attributedString) {
+                print("[RTC] expTxtReset is defined and NOT equal to textView")
+                self.textView.attributedString = expTxtReset
+                richTextContext.explicitTxtReset = nil
+            } else {
+                print("[RTC] expTxtReset is defined AND equal to textView: \(self.textView.attributedString.string)")
+            }
+        }
+        
         let range = textView.selectedRange
         if richTextContext.selectedRange != range {
             richTextContext.selectedRange = range
@@ -279,6 +305,7 @@ extension RichTextCoordinator {
      Sync the text binding with the text view.
      */
     func syncTextWithTextView() {
+//        if self.text.wrappedValue.isEqual(to: self.textView.attributedString) { return }
         DispatchQueue.main.async {
             self.text.wrappedValue = self.textView.attributedString
         }

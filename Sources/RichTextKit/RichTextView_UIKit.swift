@@ -24,7 +24,7 @@ extension RichTextView: UIDropInteractionDelegate {}
  make them implement ``RichTextViewComponent``, which is the
  protocol that is used within this library.
  */
-open class RichTextView: UITextView, RichTextViewComponent {
+open class RichTextView: AutogrowingTextView, RichTextViewComponent {
 
 
     // MARK: - Initializers
@@ -45,7 +45,7 @@ open class RichTextView: UITextView, RichTextViewComponent {
         self.setup(with: string, format: format)
     }
 
-
+    
 
     // MARK: - Properties
 
@@ -164,6 +164,8 @@ open class RichTextView: UITextView, RichTextViewComponent {
         with text: NSAttributedString,
         format: RichTextDataFormat
     ) {
+        
+        
         attributedString = .empty
         setupInitialFontSize()
         attributedString = text
@@ -176,6 +178,7 @@ open class RichTextView: UITextView, RichTextViewComponent {
         spellCheckingType = .no
         textColor = .label
         setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
     }
 
 

@@ -42,6 +42,9 @@ public class RichTextContext: ObservableObject {
      */
     public internal(set) var selectedRange = NSRange()
 
+    @Published
+    public var explicitTxtReset: NSAttributedString?
+    
     /**
      The selected range to change to.
      */

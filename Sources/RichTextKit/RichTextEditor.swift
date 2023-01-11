@@ -34,17 +34,20 @@ public struct RichTextEditor: ViewRepresentable {
         text: Binding<NSAttributedString>,
         context: RichTextContext,
         format: RichTextDataFormat = .archivedData,
+        maxHeight: CGFloat? = nil,
         viewConfiguration: @escaping ViewConfiguration = { _ in }
     ) {
         self.text = text
         self._richTextContext = ObservedObject(wrappedValue: context)
         self.format = format
+        self.configuredMaxHeight = maxHeight
         self.viewConfiguration = viewConfiguration
     }
 
     public typealias ViewConfiguration = (RichTextViewComponent) -> Void
 
-
+    private(set) var configuredMaxHeight: CGFloat?
+    
     private var format: RichTextDataFormat
     
     private var text: Binding<NSAttributedString>
@@ -78,13 +81,34 @@ public struct RichTextEditor: ViewRepresentable {
 
 
     #if os(iOS) || os(tvOS)
-    public func makeUIView(context: Context) -> some UIView {
+    public func makeUIView(context: Context) -> RichTextView {
         textView.setup(with: text.wrappedValue, format: format)
+        if let mHeight = self.configuredMaxHeight {
+            textView.maxHeight = mHeight
+        }
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.keyboardDismissMode = .interactive
+        textView.textContainerInset = UIEdgeInsets.zero
+        textView.insetsLayoutMarginsFromSafeArea = false
+        
         viewConfiguration(textView)
         return textView
     }
 
-    public func updateUIView(_ view: UIViewType, context: Context) {}
+    public func updateUIView(_ view: RichTextView, context: Context) {
+//        let viewText = view.attributedString
+//        let text = self.text.wrappedValue
+//        print("[RichTextEditor] updateUIView. View: \(viewText.string) binding: \(text.string) expTextSetTo: \(self.richTextContext.explicitTxtReset)")
+//        if !viewText.isEqual(to: text) {
+//            print("[RTE] UPDATING view")
+//            DispatchQueue.main.async {
+//                view.attributedString = text
+//            }
+//        } else {
+//            print("[RTE] skipping update of view")
+//        }
+        
+    }
     #endif
 
     #if os(macOS)
