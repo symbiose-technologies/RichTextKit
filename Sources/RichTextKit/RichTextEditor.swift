@@ -64,7 +64,6 @@ public struct RichTextEditor: ViewRepresentable {
 
     #if os(macOS)
     public let scrollView = RichTextView.scrollableTextView()
-
     public var textView: RichTextView {
         scrollView.documentView as? RichTextView ?? RichTextView()
     }
@@ -114,11 +113,21 @@ public struct RichTextEditor: ViewRepresentable {
     #if os(macOS)
     public func makeNSView(context: Context) -> some NSView {
         textView.setup(with: text.wrappedValue, format: format)
+        //Autogrowing implementation
+        
+        //https://stackoverflow.com/questions/63127103/how-to-auto-expand-height-of-nstextview-in-swiftui
+        //alternative: https://gist.github.com/unnamedd/6e8c3fbc806b8deb60fa65d6b9affab0
+        textView.textContentInset = CGSize(width: 16, height: 16)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        
         viewConfiguration(textView)
         return scrollView
     }
 
-    public func updateNSView(_ view: NSViewType, context: Context) {}
+    public func updateNSView(_ view: NSViewType, context: Context) {
+        
+        
+    }
     #endif
 }
 

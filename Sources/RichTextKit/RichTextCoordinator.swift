@@ -131,7 +131,9 @@ open class RichTextCoordinator: NSObject {
             DispatchQueue.main.async {
                 self.richTextContext.isEditingText = true
             }
-        }    }
+        }
+        
+    }
 
     open func textDidChange(_ notification: Notification) {
         syncWithTextView()
