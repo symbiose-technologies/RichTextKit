@@ -36,7 +36,9 @@ public protocol RichTextViewComponent: AnyObject,
     // RichTextStyleReader,
     RichTextStyleWriter
 {
-        
+    
+    var contextDelegate: RichTextContextDelegate? { get set }
+    
     /**
      The text view's frame.
      */
@@ -145,6 +147,25 @@ public protocol RichTextViewComponent: AnyObject,
 
 public extension RichTextViewComponent {
 
+
+    func isOverridingPasteBehavior() -> Bool {
+        if let ctxDel = self.contextDelegate {
+            return ctxDel.shouldOverridePasteHandling()
+        }
+        return false
+    }
+    
+    func isOverridingDropBehavior() -> Bool {
+        if let ctxDel = self.contextDelegate {
+            return ctxDel.shouldOverrideDropHandling()
+        }
+        return false
+    }
+    
+    
+    
+    
+    
     /**
      Alert a title and message, using "OK" as button text.
 

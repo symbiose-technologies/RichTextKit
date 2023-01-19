@@ -48,7 +48,9 @@ open class RichTextView: AutogrowingTextView, RichTextViewComponent {
     
 
     // MARK: - Properties
-
+    public var contextDelegate: RichTextContextDelegate? = nil
+    
+    
     /**
      The style to use when highlighting text in the view.
      */
@@ -132,7 +134,9 @@ open class RichTextView: AutogrowingTextView, RichTextViewComponent {
         let pasteboard = UIPasteboard.general
         let hasImage = pasteboard.image != nil
         let isPaste = action == #selector(paste(_:))
-        let canPerformImagePaste = imagePasteConfiguration != .disabled
+        
+        
+        let canPerformImagePaste = imagePasteConfiguration != .disabled || self.isOverridingPasteBehavior()
         if isPaste && hasImage && canPerformImagePaste { return true }
         return super.canPerformAction(action, withSender: sender)
     }
@@ -142,6 +146,12 @@ open class RichTextView: AutogrowingTextView, RichTextViewComponent {
      */
     open override func paste(_ sender: Any?) {
         let pasteboard = UIPasteboard.general
+        
+        if let ctxDelegate = contextDelegate {
+            if ctxDelegate.shouldOverridePasteHandling() {
+                return ctxDelegate.handlePastedImages(images: pasteboard.images ?? [])
+            }
+        }
         if let image = pasteboard.image {
             return pasteImage(image, at: selectedRange.location)
         }
@@ -301,6 +311,7 @@ open class RichTextView: AutogrowingTextView, RichTextViewComponent {
         _ interaction: UIDropInteraction,
         canHandle session: UIDropSession
     ) -> Bool {
+        
         if session.hasImage && imageDropConfiguration == .disabled { return false }
         let identifiers = supportedDropInteractionTypes.map { $0.identifier }
         return session.hasItemsConforming(toTypeIdentifiers: identifiers)

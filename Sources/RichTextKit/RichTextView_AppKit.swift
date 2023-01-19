@@ -21,7 +21,8 @@ import AppKit
 open class RichTextView: NSTextView, RichTextViewComponent {
 
     // MARK: - Properties
-    
+    public var contextDelegate: RichTextContextDelegate? = nil
+
     /**
      The style to use when highlighting text in the view.
      */
@@ -45,6 +46,14 @@ open class RichTextView: NSTextView, RichTextViewComponent {
      */
     open override func paste(_ sender: Any?) {
         let pasteboard = NSPasteboard.general
+        if self.isOverridingPasteBehavior() {
+            if let ctxDel = self.contextDelegate,
+                let images = pasteboard.images {
+                ctxDel.handlePastedImages(images: images)
+                return
+            }
+        }
+        
         if let image = pasteboard.image {
             return pasteImage(image, at: selectedRange.location)
         }
@@ -58,6 +67,13 @@ open class RichTextView: NSTextView, RichTextViewComponent {
     open override func performDragOperation(_ draggingInfo: NSDraggingInfo) -> Bool {
         let pasteboard = draggingInfo.draggingPasteboard
         if let images = pasteboard.images, images.count > 0 {
+            if self.isOverridingDropBehavior() {
+                if let ctxDel = self.contextDelegate {
+                    ctxDel.handleDroppedImages(images: images)
+                    return true
+                }
+            }
+            
             pasteImages(images, at: selectedRange().location, moveCursorToPastedContent: true)
             return true
         }

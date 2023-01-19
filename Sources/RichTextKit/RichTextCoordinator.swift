@@ -22,7 +22,7 @@ import SwiftUI
  You can inherit this class to customize the coordinator for
  your own use cases.
  */
-open class RichTextCoordinator: NSObject {
+open class RichTextCoordinator: NSObject, RichTextContextDelegate {
 
     // MARK: - Initialization
 
@@ -45,10 +45,30 @@ open class RichTextCoordinator: NSObject {
         self.richTextContext = richTextContext
         super.init()
         self.textView.delegate = self
+        self.textView.contextDelegate = self
         subscribeToContextChanges()
     }
-
-
+    
+    // MARK: - RichTextContextDelegate passthrough
+    public func handlePastedImages(images: [ImageRepresentable]) {
+        self.richTextContext.contextDelegate?.handlePastedImages(images: images)
+    }
+    
+    public func shouldOverridePasteHandling() -> Bool {
+        guard let ctxDel = self.richTextContext.contextDelegate else { return false }
+        return ctxDel.shouldOverridePasteHandling()
+    }
+    
+    public func shouldOverrideDropHandling() -> Bool {
+        guard let ctxDel = self.richTextContext.contextDelegate else { return false }
+        return ctxDel.shouldOverrideDropHandling()
+    }
+    public func handleDroppedImages(images: [ImageRepresentable]) {
+        self.richTextContext.contextDelegate?.handleDroppedImages(images: images)
+    }
+    
+    
+    
     // MARK: - Properties
 
     /**
@@ -74,7 +94,7 @@ open class RichTextCoordinator: NSObject {
     /**
      This test flag is used to avoid delaying context sync.
      */
-    internal var shouldDelaySyncContextWithTextView = true
+    internal var shouldDelaySyncContextWithTextView = false
 
 
     // MARK: - Internal Properties
@@ -132,7 +152,6 @@ open class RichTextCoordinator: NSObject {
                 self.richTextContext.isEditingText = true
             }
         }
-        
     }
 
     open func textDidChange(_ notification: Notification) {
@@ -149,7 +168,6 @@ open class RichTextCoordinator: NSObject {
                 self.richTextContext.isEditingText = false
             }
         }
-        
     }
     #endif
 }

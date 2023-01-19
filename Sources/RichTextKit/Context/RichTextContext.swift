@@ -22,16 +22,16 @@ import SwiftUI
  will not do anything unless you observe the state yourself.
  */
 public class RichTextContext: ObservableObject {
-
+    
     /**
      Create a new rich text context.
      */
     public init() {}
-
-
+    
+    
     /**
      The currently selected range, if any.
-
+     
      Note that this property is currently not @Published, in
      order to avoid redrawing the entire app. We should find
      a way to make it published once more without it causing
@@ -41,7 +41,7 @@ public class RichTextContext: ObservableObject {
      now used by ``selectRange(_:)``.
      */
     public internal(set) var selectedRange = NSRange()
-
+    
     @Published
     public var explicitTxtReset: NSAttributedString?
     
@@ -50,133 +50,136 @@ public class RichTextContext: ObservableObject {
      */
     @Published
     var selectedRangeChange = NSRange()
-
-
+    
+    
     /**
      The current background color, if any.
      */
     @Published
     public var backgroundColor: ColorRepresentable?
-
+    
     /**
      Whether or not the current rich text can be copied.
      */
     @Published
     public var canCopy = false
-
+    
     /**
      Whether or not the latest undone change can be redone.
      */
     @Published
     public var canRedoLatestChange = false
-
+    
     /**
      Whether or not the latest change can be undone.
      */
     @Published
     public var canUndoLatestChange = false
-
+    
     /**
      The current font name.
      */
     @Published
     public var fontName = ""
-
+    
     /**
      The current font size.
      */
     @Published
     public var fontSize = CGFloat.standardRichTextFontSize
-
+    
     /**
      The current foreground color, if any.
      */
     @Published
     public var foregroundColor: ColorRepresentable?
-
+    
     /**
      The currently highlighted range, if any.
      */
     @Published
     public var highlightedRange: NSRange?
-
+    
     /**
      The style to apply when highlighting a range.
      */
     @Published
     public var highlightingStyle = RichTextHighlightingStyle.standard
-
+    
     /**
      Whether or not the current text is bold.
      */
     @Published
     public var isBold = false
-
+    
     /**
      Whether or not the rich text is currently being edited.
      */
     @Published
     public var isEditingText = false
-
+    
     /**
      Whether or not the current text is italic.
      */
     @Published
     public var isItalic = false
-
+    
     /**
      Whether or not the current text is striked through.
      */
     @Published
     public var isStrikethrough = false
-
+    
     /**
      Whether or not the current text is underlined.
      */
     @Published
     public var isUnderlined = false
-
+    
     /**
      Whether or not to copy the current text selection.
      */
     @Published
     public var shouldCopySelection = false
-
+    
     /**
      Whether or not to redo the latest undone change.
      */
     @Published
     public var shouldRedoLatestChange = false
-
+    
     /**
      Set this property to trigger an image paste operation.
      */
     @Published
     public var shouldPasteImage: (image: ImageRepresentable, atIndex: Int, moveCursor: Bool)?
-
+    
     /**
      Set this property to trigger an image paste operation.
      */
     @Published
     public var shouldPasteImages: (images: [ImageRepresentable], atIndex: Int, moveCursor: Bool)?
-
+    
     /**
      Set this property to trigger a text paste operation.
      */
     @Published
     public var shouldPasteText: (text: String, atIndex: Int, moveCursor: Bool)?
-
+    
     /**
      Whether or not to undo the latest change.
      */
     @Published
     public var shouldUndoLatestChange = false
-
+    
     /**
      The current text alignment, if any.
      */
     @Published
     public var textAlignment: RichTextAlignment = .left
+    
+    
+    public var contextDelegate: RichTextContextDelegate? = nil
 }
 
 public extension RichTextContext {
