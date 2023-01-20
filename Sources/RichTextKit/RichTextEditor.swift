@@ -35,18 +35,24 @@ public struct RichTextEditor: ViewRepresentable {
         context: RichTextContext,
         format: RichTextDataFormat = .archivedData,
         maxHeight: CGFloat? = nil,
+        minHeight: CGFloat? = nil,
+        textStorage: NSTextStorage? = nil,
         viewConfiguration: @escaping ViewConfiguration = { _ in }
     ) {
         self.text = text
         self._richTextContext = ObservedObject(wrappedValue: context)
         self.format = format
+        self.configuredMinHeight = minHeight
         self.configuredMaxHeight = maxHeight
+        self.explicitTextStorage = textStorage
         self.viewConfiguration = viewConfiguration
     }
 
     public typealias ViewConfiguration = (RichTextViewComponent) -> Void
 
     private(set) var configuredMaxHeight: CGFloat?
+    private(set) var configuredMinHeight: CGFloat?
+    private(set) var explicitTextStorage: NSTextStorage?
     
     private var format: RichTextDataFormat
     
@@ -95,39 +101,44 @@ public struct RichTextEditor: ViewRepresentable {
     }
 
     public func updateUIView(_ view: RichTextView, context: Context) {
-//        let viewText = view.attributedString
-//        let text = self.text.wrappedValue
-//        print("[RichTextEditor] updateUIView. View: \(viewText.string) binding: \(text.string) expTextSetTo: \(self.richTextContext.explicitTxtReset)")
-//        if !viewText.isEqual(to: text) {
-//            print("[RTE] UPDATING view")
-//            DispatchQueue.main.async {
-//                view.attributedString = text
-//            }
-//        } else {
-//            print("[RTE] skipping update of view")
-//        }
-        
     }
     #endif
 
     #if os(macOS)
     public func makeNSView(context: Context) -> some NSView {
-        textView.setup(with: text.wrappedValue, format: format)
+        textView.setupForDynamicHeight(with: text.wrappedValue,
+                                    format: format,
+                                    scrollView: scrollView,
+                                       maxHeight: self.configuredMaxHeight,
+                                       minHeight: self.configuredMinHeight)
+        
+        textView.autoresizingMask = [.height, .width]
+        scrollView.autoresizingMask = [.height, .width]
+
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+
+        
         //Autogrowing implementation
         
         //https://stackoverflow.com/questions/63127103/how-to-auto-expand-height-of-nstextview-in-swiftui
         //alternative: https://gist.github.com/unnamedd/6e8c3fbc806b8deb60fa65d6b9affab0
+        
+        
+        
         textView.textContentInset = CGSize(width: 16, height: 16)
-        textView.translatesAutoresizingMaskIntoConstraints = false
+        
+        scrollView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        
+        scrollView.backgroundColor = .yellow
         
         viewConfiguration(textView)
         return scrollView
     }
-
+    
     public func updateNSView(_ view: NSViewType, context: Context) {
         
-        
     }
+    
     #endif
 }
 

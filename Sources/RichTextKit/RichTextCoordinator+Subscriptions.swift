@@ -42,15 +42,14 @@ private extension RichTextCoordinator {
 
     func subscribeToExplicitTxtReset() {
         richTextContext.$explicitTxtReset
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] expResetOpt in
                 if let expTxtReset = expResetOpt {
                     print("[RichTextCoordinator] subscribeToExplicitTxtReset")
-                    DispatchQueue.main.async {
+//                    DispatchQueue.main.async {
                         self?.textView.attributedString = expTxtReset
-                        
                         self?.richTextContext.explicitTxtReset = nil
-                        
-                    }
+//                    }
                 }
             }
             .store(in: &cancellables)
@@ -296,12 +295,16 @@ internal extension RichTextCoordinator {
     func setIsEditing(to newValue: Bool) {
         if newValue == textView.isFirstResponder { return }
         if newValue {
+            #if os(iOS)
             textView.becomeFirstResponder()
+            #elseif os(macOS)
+            textView.window?.makeFirstResponder(textView)
+            #endif
         } else {
             #if os(iOS)
             textView.resignFirstResponder()
-            #else
-            print("macOS currently doesn't resign first responder.")
+            #elseif os(macOS)
+            textView.resignFirstResponder()
             #endif
         }
     }

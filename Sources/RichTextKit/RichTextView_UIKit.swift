@@ -148,7 +148,7 @@ open class RichTextView: AutogrowingTextView, RichTextViewComponent {
         let pasteboard = UIPasteboard.general
         
         if let ctxDelegate = contextDelegate {
-            if ctxDelegate.shouldOverridePasteHandling() {
+            if ctxDelegate.shouldOverridePasteHandling() && pasteboard.hasImages {
                 return ctxDelegate.handlePastedImages(images: pasteboard.images ?? [])
             }
         }

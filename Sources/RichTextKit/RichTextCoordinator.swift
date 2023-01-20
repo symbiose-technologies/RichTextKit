@@ -92,9 +92,9 @@ open class RichTextCoordinator: NSObject, RichTextContextDelegate {
     public var cancellables = Set<AnyCancellable>()
 
     /**
-     This test flag is used to avoid delaying context sync.
+     This test flag is used to avoid delaying context sync. it SHOULD be set to true
      */
-    internal var shouldDelaySyncContextWithTextView = false
+    internal var shouldDelaySyncContextWithTextView = true
 
 
     // MARK: - Internal Properties

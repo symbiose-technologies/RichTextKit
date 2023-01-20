@@ -18,7 +18,7 @@ import AppKit
  make them implement ``RichTextViewComponent``, which is the
  protocol that is used within this library.
  */
-open class RichTextView: NSTextView, RichTextViewComponent {
+open class RichTextView: DynamicHeightNSTextView, RichTextViewComponent {
 
     // MARK: - Properties
     public var contextDelegate: RichTextContextDelegate? = nil
@@ -46,7 +46,7 @@ open class RichTextView: NSTextView, RichTextViewComponent {
      */
     open override func paste(_ sender: Any?) {
         let pasteboard = NSPasteboard.general
-        if self.isOverridingPasteBehavior() {
+        if self.isOverridingPasteBehavior() && pasteboard.hasImages {
             if let ctxDel = self.contextDelegate,
                 let images = pasteboard.images {
                 ctxDel.handlePastedImages(images: images)
@@ -106,6 +106,19 @@ open class RichTextView: NSTextView, RichTextViewComponent {
         textColor = .textColor
         setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
+    
+    open func setupForDynamicHeight(
+        with text: NSAttributedString,
+        format: RichTextDataFormat,
+        scrollView: NSScrollView,
+        maxHeight: CGFloat? = nil,
+        minHeight: CGFloat? = nil
+    ) {
+        super.setupDynamicHeight(scrollView: scrollView, maxHeight: maxHeight, minHeight: minHeight)
+        self.setup(with: text, format: format)
+    }
+    
+    
 
 
     // MARK: - Open Functionality
