@@ -304,7 +304,8 @@ internal extension RichTextCoordinator {
             #if os(iOS)
             textView.resignFirstResponder()
             #elseif os(macOS)
-            textView.resignFirstResponder()
+            print("Skipping resignFirstResponder for mac")
+//            textView.resignFirstResponder()
             #endif
         }
     }

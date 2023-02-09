@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 /**
  This context can be used to observe state for any rich text
@@ -23,10 +24,14 @@ import SwiftUI
  */
 public class RichTextContext: ObservableObject {
     
+    public let id: String
+    
     /**
      Create a new rich text context.
      */
-    public init() {}
+    public init() {
+        self.id = UUID().uuidString
+    }
     
     
     /**
