@@ -125,11 +125,11 @@ public struct RichTextEditor: ViewRepresentable {
         
         
         
-        textView.textContentInset = CGSize(width: 16, height: 16)
+        textView.textContentInset = CGSize(width: 8, height: 8)
         
         scrollView.setContentHuggingPriority(.defaultLow, for: .vertical)
         
-        scrollView.backgroundColor = .yellow
+//        scrollView.backgroundColor = .yellow
         
         viewConfiguration(textView)
         return scrollView

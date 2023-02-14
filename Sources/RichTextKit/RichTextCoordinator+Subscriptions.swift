@@ -48,6 +48,7 @@ private extension RichTextCoordinator {
                     print("[RichTextCoordinator] subscribeToExplicitTxtReset")
 //                    DispatchQueue.main.async {
                         self?.textView.attributedString = expTxtReset
+                    self?.textView.setupInitialFontSize()
                         self?.richTextContext.explicitTxtReset = nil
 //                    }
                 }
