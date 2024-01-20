@@ -21,6 +21,10 @@ struct EditorScreen: View {
     @StateObject
     var context = RichTextContext()
 
+    
+    let tester = LazyRTStyleTester()
+    
+    
     var body: some View {
         VStack {
             editor.padding()
@@ -42,6 +46,7 @@ private extension EditorScreen {
     var editor: some View {
         RichTextEditor(text: $text, context: context) {
             $0.textContentInset = CGSize(width: 10, height: 20)
+            tester.setEditor($0)
         }
         .background(Material.regular)
         .cornerRadius(5)

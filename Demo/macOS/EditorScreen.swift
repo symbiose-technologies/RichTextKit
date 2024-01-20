@@ -21,6 +21,9 @@ struct EditorScreen: View {
     @StateObject
     var context = RichTextContext()
 
+    let tester = LazyRTStyleTester()
+    
+    
     var body: some View {
         VStack(spacing: 0) {
             Divider()
@@ -47,6 +50,7 @@ private extension EditorScreen {
     var editor: some View {
         RichTextEditor(text: $text, context: context) {
             $0.textContentInset = CGSize(width: 10, height: 20)
+//            tester.setEditor($0)
         }
         .frame(minWidth: 400)
         .focusedValue(\.richTextContext, context)

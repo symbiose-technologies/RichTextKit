@@ -91,6 +91,8 @@ open class RichTextView: NSTextView, RichTextViewComponent {
         imageConfiguration = standardImageConfiguration(for: format)
         layoutManager?.defaultAttachmentScaling = NSImageScaling.scaleProportionallyDown
         setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
+        
     }
 
 
@@ -157,6 +159,15 @@ open class RichTextView: NSTextView, RichTextViewComponent {
     open func undoLatestChange() {
         undoManager?.undo()
     }
+    
+    
+    /**
+     Set the textStorage delegate
+     */
+    open func setTextStorageDelegate(delegate: NSTextStorageDelegate) -> Void {
+        self.textStorage?.delegate = delegate
+    }
+
 }
 
 

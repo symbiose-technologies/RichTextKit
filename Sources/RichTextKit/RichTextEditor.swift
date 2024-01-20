@@ -67,7 +67,8 @@ public struct RichTextEditor: ViewRepresentable {
         self.viewConfiguration = viewConfiguration
     }
 
-    public typealias ViewConfiguration = (RichTextViewComponent) -> Void
+//    public typealias ViewConfiguration = (RichTextViewComponent) -> Void
+    public typealias ViewConfiguration = (RichTextView) -> Void
 
 
     private var format: RichTextDataFormat
@@ -109,17 +110,22 @@ public struct RichTextEditor: ViewRepresentable {
         return textView
     }
 
-    public func updateUIView(_ view: UIViewType, context: Context) {}
+    public func updateUIView(_ view: UIViewType, context: Context) {
+        
+    }
     #endif
 
     #if os(macOS)
     public func makeNSView(context: Context) -> some NSView {
+        print("[RichTextEditor] makeNSView")
         textView.setup(with: text.wrappedValue, format: format)
         viewConfiguration(textView)
         return scrollView
     }
 
-    public func updateNSView(_ view: NSViewType, context: Context) {}
+    public func updateNSView(_ view: NSViewType, context: Context) {
+        print("[RichTextEditor] updateNSView")
+    }
     #endif
 }
 

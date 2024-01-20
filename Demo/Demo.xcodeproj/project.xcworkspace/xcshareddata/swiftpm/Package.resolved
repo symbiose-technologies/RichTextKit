@@ -1,12 +1,102 @@
 {
   "pins" : [
     {
+      "identity" : "atributika",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/symbiose-technologies/Atributika.git",
+      "state" : {
+        "branch" : "symbiose",
+        "revision" : "03602383e9e046bb0ebab64de570096fb14d6267"
+      }
+    },
+    {
+      "identity" : "mainoffender",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattmassicotte/MainOffender",
+      "state" : {
+        "revision" : "343cc3797618c29b48b037b4e2beea0664e75315",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "mockingkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/danielsaidi/MockingKit.git",
       "state" : {
         "revision" : "02bd7911f153ad2f91d4e91f189fde5152ede6a7",
         "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "neon",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/Neon.git",
+      "state" : {
+        "revision" : "4bc0fe43c46e2c08cf522d5db86666086b6e641e",
+        "version" : "0.5.1"
+      }
+    },
+    {
+      "identity" : "rearrange",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/Rearrange",
+      "state" : {
+        "revision" : "0fb658e721c68495f6340c211cc6d4719e6b52d8",
+        "version" : "1.6.0"
+      }
+    },
+    {
+      "identity" : "swift-cmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-cmark.git",
+      "state" : {
+        "branch" : "gfm",
+        "revision" : "3bc2f3e25df0cecc5dc269f7ccae65d0f386f06a"
+      }
+    },
+    {
+      "identity" : "swift-markdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-markdown.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "e5ab90941a8415304b4a4e403253bd59fef00b5a"
+      }
+    },
+    {
+      "identity" : "swifttreesitter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/SwiftTreeSitter.git",
+      "state" : {
+        "revision" : "a9b1335d5151b62b11f07599bd07d07dc5965de3",
+        "version" : "0.7.2"
+      }
+    },
+    {
+      "identity" : "textformation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/TextFormation.git",
+      "state" : {
+        "revision" : "b4987856bc860643ac2c9cdbc7d5f3e9ade68377",
+        "version" : "0.8.1"
+      }
+    },
+    {
+      "identity" : "textstory",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/TextStory.git",
+      "state" : {
+        "revision" : "8883fa739aa213e70e6cb109bfbf0a0b551e4cb5",
+        "version" : "0.8.0"
+      }
+    },
+    {
+      "identity" : "tree-sitter-markdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/symbiose-technologies/tree-sitter-markdown.git",
+      "state" : {
+        "branch" : "symbiose-main",
+        "revision" : "3a954ecdf87f2cb24022b601f9ec57751e897982"
       }
     }
   ],

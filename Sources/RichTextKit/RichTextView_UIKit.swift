@@ -178,6 +178,8 @@ open class RichTextView: UITextView, RichTextViewComponent {
             textColor = .label
         }
         setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
+        
     }
 
 
@@ -288,6 +290,12 @@ open class RichTextView: UITextView, RichTextViewComponent {
         undoManager?.undo()
     }
 
+    
+    open func setTextStorageDelegate(delegate: NSTextStorageDelegate) -> Void {
+        self.textStorage.delegate = delegate
+    }
+
+    
 
     #if os(iOS)
 

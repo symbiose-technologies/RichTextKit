@@ -14,7 +14,7 @@ final class ViewDebug {
      Make any view draw a random background color every time
      it's redrawn.
      */
-    static var isEnabled = false
+    static var isEnabled = true
 }
 
 public extension View {

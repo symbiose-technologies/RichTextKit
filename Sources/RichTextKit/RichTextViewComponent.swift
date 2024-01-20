@@ -9,6 +9,13 @@
 import CoreGraphics
 import Foundation
 
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
+
 /**
  This protocol defines a platform-agnostic api that's shared
  by the UIKit and AppKit ``RichTextView`` components.
@@ -92,6 +99,11 @@ public protocol RichTextViewComponent: AnyObject,
 
     /// Undo the latest change.
     func undoLatestChange()
+    
+    /// Set the NSTextStorage Delegate to intermediate writes
+    
+    func setTextStorageDelegate(delegate: NSTextStorageDelegate) -> Void
+    
 }
 
 
